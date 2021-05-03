@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "388860617184",
+    "project_id": "eshop-779c1",
+    "storage_bucket": "eshop-779c1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:388860617184:android:6838d876d60e95d7020b85",
+        "android_client_info": {
+          "package_name": "com.zakaria.eshop"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "388860617184-4n75fdsrcvuvbo7vg4flnnmnau4hdlq7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBHFr4M_eE1zGhKJZbd8g9b8y3zaCCb0Ig"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "388860617184-4n75fdsrcvuvbo7vg4flnnmnau4hdlq7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
