@@ -145,7 +145,7 @@ class _RegisterState extends State<Register>
     showDialog(
         context: context,
         builder: (c){
-          return LoadingAlertDialog(message : "Authentificating, Please wait...!"); //class in DialogBox package
+          return LoadingAlertDialog(message : "Registering, Please wait...!"); //class in DialogBox package
         }
     );
     //unique name of the images
@@ -189,9 +189,10 @@ class _RegisterState extends State<Register>
       "email" : fUser.email,
       "name": p.name,
       "url": p.imUrl,
+      EcommerceApp.userCartList : ["garbageValue"],
     });
     await EcommerceApp.sharedPreferences.setString("uid", fUser.uid);
-    await EcommerceApp.sharedPreferences.setString(EcommerceApp.userEmail, fUser.uid); //EcommerceApp.userEmail contains the string "email"
+    await EcommerceApp.sharedPreferences.setString(EcommerceApp.userEmail, fUser.email); //EcommerceApp.userEmail contains the string "email"
     await EcommerceApp.sharedPreferences.setString(EcommerceApp.userName, p.name);
     await EcommerceApp.sharedPreferences.setString(EcommerceApp.userAvatarUrl, p.imUrl);
     await EcommerceApp.sharedPreferences.setStringList(EcommerceApp.userCartList, ["garbageValue"]); //list because cart can contain multiple items garbagevalue is the value affected to the cart before buying
