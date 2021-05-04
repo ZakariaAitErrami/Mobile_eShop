@@ -8,24 +8,22 @@ import 'package:flutter/material.dart';
 import '../Store/storehome.dart';
 import 'package:e_shop/Config/config.dart';
 
-
 class Login extends StatefulWidget {
   @override
   _LoginState createState() => _LoginState();
 }
 
-
-
-
-
-class _LoginState extends State<Login>
-{
-  final TextEditingController _passwordTextEditingController= TextEditingController(); // _means private variable
-  final TextEditingController _emailTextEditingController = TextEditingController();
+class _LoginState extends State<Login> {
+  final TextEditingController _passwordTextEditingController =
+      TextEditingController(); // _means private variable
+  final TextEditingController _emailTextEditingController =
+      TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
-    double _screenWidth = MediaQuery.of(context).size.width, _screenHeight=MediaQuery.of(context).size.height;
+    double _screenWidth = MediaQuery.of(context).size.width,
+        _screenHeight = MediaQuery.of(context).size.height;
 
     return SingleChildScrollView(
       child: Container(
@@ -43,20 +41,22 @@ class _LoginState extends State<Login>
               padding: EdgeInsets.all(8.0),
               child: Text(
                 "Login to your account",
-                 style : TextStyle(color: Colors.white),
+                style: TextStyle(color: Colors.white),
               ),
             ),
             Form(
               key: _formKey,
               child: Column(
                 children: [
-                  CustomTextField( // class in widgets package
+                  CustomTextField(
+                    // class in widgets package
                     controller: _emailTextEditingController,
                     data: Icons.email,
                     hintText: "Email",
                     isObsecure: false,
                   ),
-                  CustomTextField( // class in widgets package
+                  CustomTextField(
+                    // class in widgets package
                     controller: _passwordTextEditingController,
                     data: Icons.vpn_key,
                     hintText: "Password",
@@ -66,19 +66,23 @@ class _LoginState extends State<Login>
               ),
             ),
             RaisedButton(
-              onPressed: (){
-                 _emailTextEditingController.text.isNotEmpty
-                     && _passwordTextEditingController.text.isNotEmpty
-                     ? loginUser()
-                     : showDialog(
-                          context: context,
-                          builder : (c){
-                            return ErrorAlertDialog(message: "Please write your email and password",);
-                          }
-                      );
+              onPressed: () {
+                _emailTextEditingController.text.isNotEmpty &&
+                        _passwordTextEditingController.text.isNotEmpty
+                    ? loginUser()
+                    : showDialog(
+                        context: context,
+                        builder: (c) {
+                          return ErrorAlertDialog(
+                            message: "Please write your email and password",
+                          );
+                        });
               },
               color: Colors.pink,
-              child: Text("Login", style: TextStyle(color: Colors.white,)),
+              child: Text("Login",
+                  style: TextStyle(
+                    color: Colors.white,
+                  )),
             ),
             SizedBox(
               height: 50.0,
@@ -93,54 +97,81 @@ class _LoginState extends State<Login>
               height: 10.0,
             ),
             FlatButton.icon(
-              onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context)=> AdminSignInPage())),
-              icon: (Icon(Icons.nature_people, color: Colors.pink,)),
-              label: Text("I'm Admin", style: TextStyle(color: Colors.pink, fontWeight:FontWeight.bold ),),
+              onPressed: () => Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => AdminSignInPage())),
+              icon: (Icon(
+                Icons.nature_people,
+                color: Colors.pink,
+              )),
+              label: Text(
+                "I'm Admin",
+                style:
+                    TextStyle(color: Colors.pink, fontWeight: FontWeight.bold),
+              ),
             ),
           ],
         ),
       ),
     );
   }
+
   FirebaseAuth _auth = FirebaseAuth.instance;
-  void loginUser() async{
+
+  void loginUser() async {
     showDialog(
         context: context,
-        builder: (c){
-          return LoadingAlertDialog(message: "Authentificating, Please wait...",);
-        }
-    );
+        builder: (c) {
+          return LoadingAlertDialog(
+            message: "Authentificating, Please wait...",
+          );
+        });
     FirebaseUser firebaseUser;
-    await _auth.signInWithEmailAndPassword(
-        email: _emailTextEditingController.text.trim(),
-        password: _passwordTextEditingController.text.trim(),
-    ).then((authUser){
+    await _auth
+        .signInWithEmailAndPassword(
+      email: _emailTextEditingController.text.trim(),
+      password: _passwordTextEditingController.text.trim(),
+    )
+        .then((authUser) {
       firebaseUser = authUser.user;
-    }).catchError((error){
+    }).catchError((error) {
       Navigator.pop(context);
       showDialog(
           context: context,
-          builder: (c){
-            return ErrorAlertDialog(message: error.message.toString(),);
-          }
-      );
+          builder: (c) {
+            return ErrorAlertDialog(
+              message: error.message.toString(),
+            );
+          });
     });
-    if(firebaseUser !=null){
-      readDta(firebaseUser).then((s){
+    if (firebaseUser != null) {
+      readDta(firebaseUser).then((s) {
         Navigator.pop(context);
         Route route = MaterialPageRoute(builder: (c) => StoreHome());
         Navigator.pushReplacement(context, route);
       });
     }
   }
-  Future readDta(FirebaseUser fUser) async{
-    Firestore.instance.collection("users").document(fUser.uid).get().then((dataSnapshot) async {
-      await EcommerceApp.sharedPreferences.setString("uid", dataSnapshot.data[EcommerceApp.userUID]);
-      await EcommerceApp.sharedPreferences.setString(EcommerceApp.userEmail, dataSnapshot.data[EcommerceApp.userEmail]); //EcommerceApp.userEmail contains the string "email"
-      await EcommerceApp.sharedPreferences.setString(EcommerceApp.userName, dataSnapshot.data[EcommerceApp.userName]);
-      await EcommerceApp.sharedPreferences.setString(EcommerceApp.userAvatarUrl, dataSnapshot.data[EcommerceApp.userAvatarUrl]);
-      List<String> cartList = dataSnapshot.data[EcommerceApp.userCartList].cast<String>();
-      await EcommerceApp.sharedPreferences.setStringList(EcommerceApp.userCartList, cartList);
+
+  Future readDta(FirebaseUser fUser) async {
+    Firestore.instance
+        .collection("users")
+        .document(fUser.uid)
+        .get()
+        .then((dataSnapshot) async {
+      await EcommerceApp.sharedPreferences
+          .setString("uid", dataSnapshot.data[EcommerceApp.userUID]);
+      await EcommerceApp.sharedPreferences.setString(
+          EcommerceApp.userEmail,
+          dataSnapshot.data[EcommerceApp
+              .userEmail]); //EcommerceApp.userEmail contains the string "email"
+      await EcommerceApp.sharedPreferences.setString(
+          EcommerceApp.userName, dataSnapshot.data[EcommerceApp.userName]);
+      await EcommerceApp.sharedPreferences.setString(EcommerceApp.userAvatarUrl,
+          dataSnapshot.data[EcommerceApp.userAvatarUrl]);
+      List<String> cartList =
+          dataSnapshot.data[EcommerceApp.userCartList].cast<String>();
+      await EcommerceApp.sharedPreferences
+          .setStringList(EcommerceApp.userCartList, cartList);
     });
   }
 }
