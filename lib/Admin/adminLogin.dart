@@ -5,9 +5,6 @@ import 'package:e_shop/Widgets/customTextField.dart';
 import 'package:e_shop/DialogBox/errorDialog.dart';
 import 'package:flutter/material.dart';
 
-
-
-
 class AdminSignInPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -36,20 +33,20 @@ class AdminSignInPage extends StatelessWidget {
   }
 }
 
-
 class AdminSignInScreen extends StatefulWidget {
   @override
   _AdminSignInScreenState createState() => _AdminSignInScreenState();
 }
 
-class _AdminSignInScreenState extends State<AdminSignInScreen>
-{
-  final TextEditingController _passwordTextEditingController = TextEditingController(); // _means private variable
-  final TextEditingController _adminIDTextEditingController = TextEditingController();
+class _AdminSignInScreenState extends State<AdminSignInScreen> {
+  final TextEditingController _passwordTextEditingController =
+      TextEditingController(); // _means private variable
+  final TextEditingController _adminIDTextEditingController =
+      TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
-
     double _screenWidth = MediaQuery.of(context).size.width,
         _screenHeight = MediaQuery.of(context).size.height;
 
@@ -78,7 +75,10 @@ class _AdminSignInScreenState extends State<AdminSignInScreen>
               padding: EdgeInsets.all(8.0),
               child: Text(
                 "Admin",
-                style: TextStyle(color: Colors.white, fontSize: 28.0, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 28.0,
+                    fontWeight: FontWeight.bold),
               ),
             ),
             Form(
@@ -108,15 +108,15 @@ class _AdminSignInScreenState extends State<AdminSignInScreen>
             RaisedButton(
               onPressed: () {
                 _adminIDTextEditingController.text.isNotEmpty &&
-                    _passwordTextEditingController.text.isNotEmpty
+                        _passwordTextEditingController.text.isNotEmpty
                     ? loginAdmin()
                     : showDialog(
-                    context: context,
-                    builder: (c) {
-                      return ErrorAlertDialog(
-                        message: "Please write your email and password",
-                      );
-                    });
+                        context: context,
+                        builder: (c) {
+                          return ErrorAlertDialog(
+                            message: "Please write your email and password",
+                          );
+                        });
               },
               color: Colors.pink,
               child: Text("Login",
@@ -146,7 +146,7 @@ class _AdminSignInScreenState extends State<AdminSignInScreen>
               label: Text(
                 "I'm not Admin",
                 style:
-                TextStyle(color: Colors.pink, fontWeight: FontWeight.bold),
+                    TextStyle(color: Colors.pink, fontWeight: FontWeight.bold),
               ),
             ),
             SizedBox(
@@ -157,25 +157,31 @@ class _AdminSignInScreenState extends State<AdminSignInScreen>
       ),
     );
   }
-  loginAdmin(){
-     Firestore.instance.collection("admins").getDocuments().then((snapshot){
-        snapshot.documents.forEach((result) {
-          if(result.data["id"] != _adminIDTextEditingController.text.trim()){
-              Scaffold.of(context).showSnackBar(SnackBar(content: Text("The admin username is not correct"),));
-          }
-            else if(result.data["password"] != _passwordTextEditingController.text.trim()){
-              Scaffold.of(context).showSnackBar(SnackBar(content: Text("your password is not correct"),));
-            }
-            else{
-              Scaffold.of(context).showSnackBar(SnackBar(content: Text("Welcome Dear Admin "+result.data["name"]),));
-              setState(() {
-                _adminIDTextEditingController.text = "";
-                _passwordTextEditingController.text= "";
-              });
-              Route route = MaterialPageRoute(builder: (c) => UploadPage());
-              Navigator.pushReplacement(context, route);
-            }
-        });
-     });
+
+  loginAdmin() {
+    Firestore.instance.collection("admins").getDocuments().then((snapshot) {
+      snapshot.documents.forEach((result) {
+        if (result.data["id"] != _adminIDTextEditingController.text.trim()) {
+          Scaffold.of(context).showSnackBar(SnackBar(
+            content: Text("The admin username is not correct"),
+          ));
+        } else if (result.data["password"] !=
+            _passwordTextEditingController.text.trim()) {
+          Scaffold.of(context).showSnackBar(SnackBar(
+            content: Text("your password is not correct"),
+          ));
+        } else {
+          Scaffold.of(context).showSnackBar(SnackBar(
+            content: Text("Welcome Dear Admin " + result.data["name"]),
+          ));
+          setState(() {
+            _adminIDTextEditingController.text = "";
+            _passwordTextEditingController.text = "";
+          });
+          Route route = MaterialPageRoute(builder: (c) => UploadPage());
+          Navigator.pushReplacement(context, route);
+        }
+      });
+    });
   }
 }
