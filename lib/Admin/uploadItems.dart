@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_shop/Admin/adminShiftOrders.dart';
+import 'package:e_shop/Classes/marchandise.dart';
 import 'package:e_shop/Widgets/loadingWidget.dart';
 import 'package:e_shop/main.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -204,7 +205,7 @@ class _UploadPageState extends State<UploadPage>
         ),
         actions: [
           FlatButton(
-            onPressed: () => print("clicked"),
+            onPressed: uploading ? null : () => uploadImageAndSaveItemInfo(),
             child: Text(
               "Add",
               style: TextStyle(
@@ -316,5 +317,55 @@ class _UploadPageState extends State<UploadPage>
       _shortInfotextEditingController.clear();
       _titletextEditingController.clear();
     });
+  }
+
+  uploadImageAndSaveItemInfo() async{
+    setState(() {
+      uploading = true;
+    });
+   String imageDownloadUrl = await uploadItemImage(file);
+   saveItemInfo(imageDownloadUrl);
+  }
+  Future<String> uploadItemImage(mFileImage) async{ //return the url
+    final StorageReference storageReference = FirebaseStorage.instance.ref().child("Items");
+    StorageUploadTask uploadTask = storageReference.child("product_$productId.jpg").putFile(mFileImage);
+    StorageTaskSnapshot taskSnapshot = await uploadTask.onComplete;
+    String downloadUrl = await taskSnapshot.ref.getDownloadURL();
+    return downloadUrl;
+  }
+  saveItemInfo(String downloadUrl){
+      final itemRef = Firestore.instance.collection("items");
+      //marchandise({this.SHORTinfo,this.Description,this.unit_price,this.pub_date,this.titre,this.statut,this.URL});
+      var m = new marchandise(SHORTinfo: _shortInfotextEditingController.text.trim(), Description: _descriptiontextEditingController.text.trim(),
+          unit_price: _pricetextEditingController.text.trim(), titre: _titletextEditingController.text.trim());
+      /*itemRef.document(productId).setData({
+        "shortInfo": _shortInfotextEditingController.text.trim(),
+        "longDescription": _descriptiontextEditingController.text.trim(),
+        "price": _pricetextEditingController.text.trim(),
+        "publishedDate": DateTime.now(),
+        "status": "available",
+        "thumbnailUrl": downloadUrl,
+        "title": _titletextEditingController.text.trim(),
+      });*/
+      itemRef.document(productId).setData({
+        "shortInfo": m.SHORTinfo,
+        "longDescription": m.Description,
+        "price": m.unit_price,
+        "publishedDate": DateTime.now(),
+        "status": "available",
+        "thumbnailUrl": downloadUrl,
+        "title": m.titre,
+      });
+
+
+      setState(() {
+        file = null;
+        uploading = false;
+        productId = DateTime.now().millisecondsSinceEpoch.toString();
+        _descriptiontextEditingController.clear();
+        _titletextEditingController.clear();
+        _shortInfotextEditingController.clear();
+        _pricetextEditingController.clear();
+      });
   }
 }
