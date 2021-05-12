@@ -94,7 +94,7 @@ class MyDrawer extends StatelessWidget {
                 ),
                 ListTile(
                   leading: Icon(
-                    Icons.home,
+                    Icons.reorder,
                     color: Colors.white,
                   ),
                   title: Text(
@@ -113,7 +113,7 @@ class MyDrawer extends StatelessWidget {
                 ),
                 ListTile(
                   leading: Icon(
-                    Icons.home,
+                    Icons.shopping_cart,
                     color: Colors.white,
                   ),
                   title: Text(
@@ -132,7 +132,7 @@ class MyDrawer extends StatelessWidget {
                 ),
                 ListTile(
                   leading: Icon(
-                    Icons.home,
+                    Icons.search,
                     color: Colors.white,
                   ),
                   title: Text(
@@ -152,7 +152,7 @@ class MyDrawer extends StatelessWidget {
                 ),
                 ListTile(
                   leading: Icon(
-                    Icons.home,
+                    Icons.add_location,
                     color: Colors.white,
                   ),
                   title: Text(
@@ -172,7 +172,7 @@ class MyDrawer extends StatelessWidget {
                 ),
                 ListTile(
                   leading: Icon(
-                    Icons.home,
+                    Icons.exit_to_app,
                     color: Colors.white,
                   ),
                   title: Text(

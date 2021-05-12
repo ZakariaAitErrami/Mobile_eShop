@@ -337,7 +337,7 @@ class _UploadPageState extends State<UploadPage>
       final itemRef = Firestore.instance.collection("items");
       //marchandise({this.SHORTinfo,this.Description,this.unit_price,this.pub_date,this.titre,this.statut,this.URL});
       var m = new marchandise(SHORTinfo: _shortInfotextEditingController.text.trim(), Description: _descriptiontextEditingController.text.trim(),
-          unit_price: _pricetextEditingController.text.trim(), titre: _titletextEditingController.text.trim());
+          unit_price: _pricetextEditingController.text, titre: _titletextEditingController.text.trim());
       /*itemRef.document(productId).setData({
         "shortInfo": _shortInfotextEditingController.text.trim(),
         "longDescription": _descriptiontextEditingController.text.trim(),
@@ -350,7 +350,7 @@ class _UploadPageState extends State<UploadPage>
       itemRef.document(productId).setData({
         "shortInfo": m.SHORTinfo,
         "longDescription": m.Description,
-        "price": m.unit_price,
+        "price": int.parse(m.unit_price),
         "publishedDate": DateTime.now(),
         "status": "available",
         "thumbnailUrl": downloadUrl,
